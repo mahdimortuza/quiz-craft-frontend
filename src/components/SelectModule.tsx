@@ -1,5 +1,6 @@
 import { Option, Select, Spinner } from "@material-tailwind/react";
 import { useGetAllModuleQuery } from "../redux/api/baseApi";
+import { setSelectedModule } from "../redux/features/module/moduleSlice";
 import { setActiveStepper } from "../redux/features/stepper/stepperSlice";
 import { useAppDispatch } from "../redux/hooks";
 
@@ -13,17 +14,27 @@ export function SelectModule() {
       </div>
     );
   }
+
   return (
     <div className="w-72">
       <Select
         onChange={(value) => {
+          const moduleTitle = modules.data.find(
+            (module) => module._id === value
+          ).title;
+          dispatch(
+            setSelectedModule({
+              moduleTitle,
+              moduleId: value,
+            })
+          );
           dispatch(setActiveStepper(1));
         }}
         placeholder={""}
         label="Select Module"
       >
         {modules?.data.map((module) => (
-          <Option value={module.title} key={module._id}>
+          <Option value={module._id} key={module._id}>
             {module.title}
           </Option>
         ))}
