@@ -14,9 +14,17 @@ export const baseApi = createApi({
         method: "GET",
       }),
     }),
+
+    addQuiz: builder.mutation({
+      query: (data) => ({
+        url: "/quiz",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllModuleQuery } = baseApi;
+export const { useGetAllModuleQuery, useAddQuizMutation } = baseApi;

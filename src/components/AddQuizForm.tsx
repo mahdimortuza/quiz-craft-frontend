@@ -1,9 +1,43 @@
-import { Button, Card, Input, Typography } from "@material-tailwind/react";
-import { useAppSelector } from "../redux/hooks";
+import {
+  Button,
+  Card,
+  Input,
+  Option,
+  Select,
+  Typography,
+} from "@material-tailwind/react";
+import toast from "react-hot-toast";
+import { useAddQuizMutation } from "../redux/api/baseApi";
+import {
+  addQuiz,
+  resetQuizForm,
+  resetQuizPublish,
+  setCorrectOption,
+  setDescription,
+  setOption,
+  setQuestion,
+} from "../redux/features/quiz/quizSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 export function AddQuizForm() {
-  const { moduleTitle } = useAppSelector((state) => state.module);
+  const { moduleTitle, moduleId } = useAppSelector((state) => state.module);
+  const [publishQuiz, { data, isLoading }] = useAddQuizMutation();
+  console.log(data, isLoading);
+  const { options, question, description, quiz } = useAppSelector(
+    (state) => state.quiz
+  );
 
+  const dispatch = useAppDispatch();
+
+  const handleAddQuiz = () => {
+    dispatch(addQuiz(moduleId));
+    dispatch(resetQuizForm());
+  };
+  const handlePublish = async () => {
+    await publishQuiz(quiz);
+    dispatch(resetQuizPublish());
+    toast.success("quiz published successfully");
+  };
   return (
     <Card placeholder={""} color="transparent" shadow={false}>
       <Typography placeholder={""} variant="h4" color="blue-gray">
@@ -24,6 +58,8 @@ export function AddQuizForm() {
               Question
             </Typography>
             <Input
+              value={question}
+              onChange={(e) => dispatch(setQuestion(e.target.value))}
               crossOrigin={""}
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -42,6 +78,8 @@ export function AddQuizForm() {
               Description
             </Typography>
             <Input
+              value={description}
+              onChange={(e) => dispatch(setDescription(e.target.value))}
               crossOrigin={""}
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
@@ -61,12 +99,14 @@ export function AddQuizForm() {
               Option 1
             </Typography>
             <Input
+              value={options[0]}
               crossOrigin={""}
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              onBlur={(e) => dispatch(setOption(e.target.value))}
             />
           </div>
           <div>
@@ -79,12 +119,14 @@ export function AddQuizForm() {
               Option 2
             </Typography>
             <Input
+              value={options[1]}
               crossOrigin={""}
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              onBlur={(e) => dispatch(setOption(e.target.value))}
             />
           </div>
           <div>
@@ -97,12 +139,14 @@ export function AddQuizForm() {
               Option 3
             </Typography>
             <Input
+              value={options[2]}
               crossOrigin={""}
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              onBlur={(e) => dispatch(setOption(e.target.value))}
             />
           </div>
           <div>
@@ -115,12 +159,14 @@ export function AddQuizForm() {
               Option 4
             </Typography>
             <Input
+              value={options[3]}
               crossOrigin={""}
               size="lg"
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              onBlur={(e) => dispatch(setOption(e.target.value))}
             />
           </div>
 
@@ -133,19 +179,31 @@ export function AddQuizForm() {
             >
               Correct option
             </Typography>
-            <Input
-              crossOrigin={""}
-              size="lg"
-              className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
+
+            <Select
+              // selected={correctOption}
+              placeholder={""}
+              onChange={(value) => {
+                dispatch(setCorrectOption(value));
               }}
-            />
+            >
+              {options.map((option) => {
+                return <Option value={option}>{option}</Option>;
+              })}
+            </Select>
           </div>
         </div>
-        <div className="flex flex-end">
-          <Button size="sm" placeholder={""}>
+        <div className="flex justify-end">
+          <Button onClick={handleAddQuiz} size="sm" placeholder={""}>
             Add quiz
+          </Button>
+          <Button
+            onClick={handlePublish}
+            size="sm"
+            placeholder={""}
+            className="ml-4"
+          >
+            Publish
           </Button>
         </div>{" "}
       </form>

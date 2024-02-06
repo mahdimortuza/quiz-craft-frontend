@@ -20,7 +20,7 @@ export function SelectModule() {
       <Select
         onChange={(value) => {
           const moduleTitle = modules.data.find(
-            (module) => module._id === value
+            (module: any) => module._id === value
           ).title;
           dispatch(
             setSelectedModule({
