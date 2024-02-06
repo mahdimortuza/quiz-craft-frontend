@@ -7,24 +7,5 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_APP_SERVER_URL}/api`,
   }),
-  endpoints: (builder) => ({
-    getAllModule: builder.query({
-      query: () => ({
-        url: "/module",
-        method: "GET",
-      }),
-    }),
-
-    addQuiz: builder.mutation({
-      query: (data) => ({
-        url: "/quiz",
-        method: "POST",
-        body: data,
-      }),
-    }),
-  }),
+  endpoints: () => ({}),
 });
-
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetAllModuleQuery, useAddQuizMutation } = baseApi;
