@@ -1,5 +1,6 @@
 import { Option, Select, Spinner } from "@material-tailwind/react";
-import { useGetAllModuleQuery } from "../redux/api/baseApi";
+import {} from "../redux/api/baseApi";
+import { useGetAllModuleQuery } from "../redux/features/module/moduleApi";
 import { setSelectedModule } from "../redux/features/module/moduleSlice";
 import { setActiveStepper } from "../redux/features/stepper/stepperSlice";
 import { useAppDispatch } from "../redux/hooks";

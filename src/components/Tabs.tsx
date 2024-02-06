@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Square3Stack3DIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import {
   Tab,
@@ -5,14 +6,18 @@ import {
   Tabs,
   TabsBody,
   TabsHeader,
+  Typography,
 } from "@material-tailwind/react";
 import React from "react";
+import { useGetAllModuleQuery } from "../redux/features/module/moduleApi";
 import { AddQuizForm } from "./AddQuizForm";
 import { QuizCard } from "./QuizCard";
+import { QuizModal } from "./QuizModal";
 import { SelectModule } from "./SelectModule";
 import { DefaultStepper } from "./Stepper";
 
 export function TabsWithIcon() {
+  const { data: modules, isLoading } = useGetAllModuleQuery("");
   const steps = [
     {
       value: 0,
@@ -34,12 +39,34 @@ export function TabsWithIcon() {
     },
   ];
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
   const data = [
     {
       label: "Quiz List",
       value: "quiz-list",
       icon: Square3Stack3DIcon,
-      desc: <QuizCard>Hello world</QuizCard>,
+      desc: (
+        <>
+          {modules?.data.map((module: any) => (
+            <QuizCard>
+              <Typography
+                placeholder={""}
+                variant="h6"
+                color="blue-gray"
+                className="mb-3"
+              >
+                {module.title}
+              </Typography>
+              <div className="flex justify-end">
+                <QuizModal moduleId={module._id} />
+              </div>
+            </QuizCard>
+          ))}
+        </>
+      ),
     },
     {
       label: "Add Quiz",

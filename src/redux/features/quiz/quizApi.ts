@@ -9,6 +9,12 @@ const quizApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    getAllQuizByModuleId: builder.query({
+      query: (moduleId) => ({
+        url: `/quiz?module=${moduleId}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
-export const { useAddQuizMutation } = quizApi;
+export const { useAddQuizMutation, useGetAllQuizByModuleIdQuery } = quizApi;

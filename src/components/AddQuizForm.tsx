@@ -7,7 +7,8 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import toast from "react-hot-toast";
-import { useAddQuizMutation } from "../redux/api/baseApi";
+import {} from "../redux/api/baseApi";
+import { useAddQuizMutation } from "../redux/features/quiz/quizApi";
 import {
   addQuiz,
   resetQuizForm,
