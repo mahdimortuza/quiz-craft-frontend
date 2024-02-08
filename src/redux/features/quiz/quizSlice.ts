@@ -14,6 +14,7 @@ type TInitialState = {
   options: string[];
   correctOption: string;
   quiz: TQuiz[];
+  currentQuestionIndex: number;
 };
 
 const initialState: TInitialState = {
@@ -22,6 +23,7 @@ const initialState: TInitialState = {
   description: "",
   options: [],
   correctOption: "",
+  currentQuestionIndex: 0,
 };
 
 const quizSlice = createSlice({
@@ -57,6 +59,9 @@ const quizSlice = createSlice({
     resetQuizPublish: (state) => {
       state.quiz = [];
     },
+    setCurrentQuestionIndex: (state, action) => {
+      state.currentQuestionIndex = action.payload;
+    },
   },
 });
 
@@ -68,6 +73,7 @@ export const {
   setCorrectOption,
   resetQuizForm,
   resetQuizPublish,
+  setCurrentQuestionIndex,
 } = quizSlice.actions;
 
 export default quizSlice.reducer;
